@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Istream</title>
+        <title>iStream</title>
     </head>
     <body>
         <header>
-            <h1>iStream!</h1>
+            <h1>iStream</h1>
             <h3>Find Your Next Adventure</h3>
+            <section>Welcome to iStream! Your one-stop-shop for finding your next video game adventure.
+                Just tell us the exact game you're searching for below, and we'll give you everything you need 
+                to make your own informed descision about the game you're interested in! It's that easy!
+            </section>
+            <aside>*please note that this app is in an Alpha state and does not currently display some of the less 
+                important data such as a game description, ESRB rating, or Metacritic score. Additionally, you cannot currently 
+                search remakes such as the latest Call of Duty: Modern Warfare or Doom(2016).
+            </aside>
         </header>
         <main>
             <form id="search-form">
-                <input type="text" id="userSearch">
+                <input type="text" id="userSearch" placeholder="ex: Apex Legends" required>
                 <button type="submit">Search</button>
             </form>
             <div id="results-container">
