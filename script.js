@@ -14,8 +14,24 @@ const authHeader = {
 
 const rawgBaseUrl = 'https://api.rawg.io/api/games/';
 
-function getGamesResults (input) {
+function refineInput(rawgName) {
+
+    const nameArray = rawgName.toLowerCase().split(" ");
+
+    const titleDate = nameArray.filter(index => index.includes('('));
+
+    if (titleDate.length !== 0) {
+        nameArray.pop();
+        return nameArray.join(" ");
+    }
+    else {
+        return nameArray.join(" ");
+    }
+};
+
+function getGamesResults(input) {
     let rawgSearchUrl = `${rawgBaseUrl}${input}`;
+
     fetch(rawgSearchUrl)
         .then(rawgResponse => {
             if (rawgResponse.ok) {
@@ -33,8 +49,11 @@ function getGamesResults (input) {
 };
 
 function getTwitchGame(rawgResponse, options) {
+    const refinedInput = refineInput(rawgResponse.name);
     
-    const gameUrl = `${twitchGameBase}?name=${rawgResponse.name}`
+    const gameUrl = `${twitchGameBase}?name=${refinedInput}`
+
+    console.log(gameUrl);
 
     fetch(gameUrl, options)
         .then(gameResponse => {
@@ -102,7 +121,8 @@ function displayResults(userResponse) {
 function watchForm() {
     $('#search-form').submit(event => {
         event.preventDefault();
-        let userInput = $('#userSearch').val().toLowerCase().split(" ").join("-");
+
+        const userInput = $('#userSearch').val().split(" ").join("-");
 
         $('#results-list').empty();
         getGamesResults(userInput);
