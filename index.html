@@ -6,13 +6,18 @@
     <body>
         <header>
             <h1>iStream</h1>
-            <h3>Find Your Next Adventure</h3>
-            <section>Welcome to iStream! Your one-stop-shop for finding your next video game adventure.
-                Just tell us the exact game you're searching for below, and we'll give you everything you need 
-                to make your own informed descision about the game you're interested in! It's that easy!
+            <h2>Find Your Next Adventure</h2>
+            <h3>Welcome to iStream!</h3>
+            <section>Your one-stop-shop for finding your next video game adventure.
+                Just search the game you're interested in below, and we'll get you ready to start your new adventure!
             </section>
-            <aside>*please note that this app is in an Alpha state and does not currently display some of the less 
-                important data such as a game description, ESRB rating, or Metacritic score.
+            <aside>
+                <h4>Things We Need:</h4>
+                <ul>
+                    <li>The full name of the game</li>
+                    <li>No special characters</li>
+                    <li>And uh, yeah, that's it! Holy cow let's get searchin'!</li>
+                </ul>
             </aside>
         </header>
         <main>
@@ -20,9 +25,9 @@
                 <input type="text" id="userSearch" placeholder="ex: Apex Legends" required>
                 <button type="submit">Search</button>
             </form>
+            <div id="rawg-data-container"></div>
             <div id="results-container">
-                <ul id="results-list">
-                </ul>
+                <ul id="results-list"></ul>
             </div>
         </main>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

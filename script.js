@@ -29,6 +29,52 @@ function refineInput(rawgName) {
     }
 };
 
+function displayGameData(rawg) {
+    $('#rawg-data-container').empty();
+
+    $('#rawg-data-container').append(
+        `<section>
+            <img src="${rawg.background_image}">
+            <h2><a href="${rawg.website}" target="_blank">${rawg.name_original}</a></h2>
+            <section id="rating-container">
+            </section>
+            <span id="platforms">Available at:
+                <ul id="stores-list">
+                </ul>
+            </span>
+        </section>
+        <div>
+            <span>
+                Publisher: ${rawg.publishers[0].name}
+                <br>
+                Developer: ${rawg.developers[0].name}
+            </span>
+            ${rawg.description}
+        </div>`);
+
+        if(rawg.esrb_rating !== null) {
+            $('#rating-container').append(`<h4>ESRB: ${rawg.esrb_rating.name}</h4>`);
+        }
+        else{
+            $('#rating-container').append(`<h4>ESRB: N/A</h4>`);
+        };
+
+        if(rawg.meatcritic !== null) {
+            $('#rating-container').append(`<h4>Metacritic score: ${rawg.metacritic}</h4>`);
+        }
+        else{
+            $('#rating-container').append(`<h4>Metacritic score: N/A</h4>`);
+        };
+
+        for(let i = 0; i < rawg.stores.length; i++) {
+            $('#stores-list').append(
+                `<li>
+                <a href="${rawg.stores[i].url}" target="_blank">${rawg.stores[i].store.name}</a>
+                </li>`
+            );
+        };
+};
+
 function getGamesResults(input) {
     let rawgSearchUrl = `${rawgBaseUrl}${input}`;
 
@@ -41,11 +87,10 @@ function getGamesResults(input) {
         })
         .then(rawgResponseJson => {
             console.log(rawgResponseJson)
+            displayGameData(rawgResponseJson)
             getTwitchGame(rawgResponseJson, authHeader)
         })
             .catch(error => alert('Oops, could not fetch RAWG.'))
-
-    
 };
 
 function getTwitchGame(rawgResponse, options) {
@@ -110,12 +155,18 @@ function getTwitchUsers(streamResponse, options) {
                 displayResults(usersResponseJson);
             })
                 .catch(error => alert(`Oops, could not fetch Users at ${i}.`));
-    }
+    };
 };
 
 function displayResults(userResponse) {
 
-    $('#results-list').append(`<h3><a href="https://twitch.tv/${userResponse.data[0].display_name}">${userResponse.data[0].display_name}</a></h3>`);
+    $('#results-list').append(
+        `<img src="${userResponse.data[0].profile_image_url}">
+        <h3>
+            <a href="https://twitch.tv/${userResponse.data[0].display_name}" target="_blank">${userResponse.data[0].display_name}</a>
+        </h3>
+        <div>${userResponse.data[0].description}</div>
+        `);
 };
 
 function watchForm() {
