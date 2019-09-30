@@ -30,11 +30,14 @@ function refineInput(rawgName) {
 };
 
 function displayGameData(rawg) {
+    $('.welcoming').addClass('hidden');
     $('#rawg-data-container').empty();
+
+    $('#banner').empty();
+    $('#banner').append(`<img id="game-banner" src="${rawg.background_image}">`);
 
     $('#rawg-data-container').append(
         `<section>
-            <img src="${rawg.background_image}">
             <h2><a href="${rawg.website}" target="_blank">${rawg.name_original}</a></h2>
             <section id="rating-container">
             </section>
@@ -161,11 +164,9 @@ function getTwitchUsers(streamResponse, options) {
 function displayResults(userResponse) {
 
     $('#results-list').append(
-        `<img src="${userResponse.data[0].profile_image_url}">
-        <h3>
-            <a href="https://twitch.tv/${userResponse.data[0].display_name}" target="_blank">${userResponse.data[0].display_name}</a>
-        </h3>
-        <div>${userResponse.data[0].description}</div>
+        `<img class="twitchProfile" src="${userResponse.data[0].profile_image_url}">
+        <a class="profileLink" href="https://twitch.tv/${userResponse.data[0].display_name}" target="_blank">${userResponse.data[0].display_name}</a>
+        <p class="profileDescription">${userResponse.data[0].description}</p>
         `);
 };
 
