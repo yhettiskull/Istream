@@ -96,7 +96,7 @@ function getGamesResults(input) {
             displayGameData(rawgResponseJson)
             getTwitchGame(rawgResponseJson, authHeader)
         })
-            .catch(error => alert('Oops, could not fetch RAWG.'))
+            .catch(error => alert(`Heck, we couldn't find your game. Review the Things We Need to ensure your search is valid.`))
 };
 
 function getTwitchGame(rawgResponse, options) {
@@ -117,7 +117,7 @@ function getTwitchGame(rawgResponse, options) {
                 console.log(gameResponseJson);
                 getTwitchStreams(gameResponseJson, authHeader);
             })
-                .catch(error => alert('Oops, could not fetch Game.'))
+                .catch(error => alert(`Oops, could not get your game from Twitch. That's probably our bad cheif.`))
 
     console.log('getTwitchGame ran');
 
@@ -139,11 +139,15 @@ function getTwitchStreams(gameResponse, options) {
                 console.log(streamResponseJson);
                 getTwitchUsers(streamResponseJson, authHeader);
             })
-                .catch(error => alert('Oops, could not fetch Streams.'));
+                .catch(error => {
+                    alert(`Rats, Twitch couldn't find any streams for you.`);
+                    $('#results-list').append(`Oh man, it looks like no one is streaming this game right now. Bummer.`);
+                });
     console.log('getTwitchStreams ran.')
 };
 
 function getTwitchUsers(streamResponse, options) {
+    $('.streamsHeader').removeClass('hidden');
     
     for(let i = 0; i <= 2; i++) {
     let usersUrl = `${twitchUserBase}?id=${streamResponse.data[i].user_id}`
@@ -160,7 +164,7 @@ function getTwitchUsers(streamResponse, options) {
                 console.log(usersResponseJson);
                 displayResults(usersResponseJson);
             })
-                .catch(error => alert(`Oops, could not fetch Users at ${i}.`));
+                .catch(error => alert(`Oops, we couldn't find Twitch users.`));
     };
 };
 
@@ -186,4 +190,28 @@ function watchForm() {
     });
 };
 
+function getGameSuggestions(gameUrl, options) {
+    const topGames = `${gameUrl}/top?first=3`;
+
+    fetch(topGames, options)
+        .then(suggestionResponse => {
+            if(suggestionResponse.ok){
+                return suggestionResponse.json();
+            }
+            throw new Error(suggestionResponse.statusText)
+        })
+            .then(suggestionResponseJson => {
+                console.log(suggestionResponseJson)
+                $('#game-suggestion-container').append(
+                    `<li>${suggestionResponseJson.data[0].name}</li>
+                    <li>${suggestionResponseJson.data[1].name}</li>
+                    <li>${suggestionResponseJson.data[2].name}</li>`
+                )
+            })
+                .catch(err => {
+                    $('#game-suggestion-container').append(`Yikes, it looks like we couldn't actually find them!`);
+                });
+};
+
 $(watchForm());
+$(getGameSuggestions(twitchGameBase, authHeader))

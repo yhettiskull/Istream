@@ -17,18 +17,21 @@
                     <ul>
                         <li><b>The full name of the game</li>
                         <li>No special characters</li>
-                        <li>And uh, yeah, that's it! Holy cow let's get searchin'!</b></li>
+                        <li>Uh, yeah, that's it! Holy cow let's game!</b></li>
                     </ul>
                 </aside>
             </div>
         </header>
         <main>
+            <div>Not looking for anything in particular? Search a popular game like:</div>
+            <ul id="game-suggestion-container"></ul>
             <form id="search-form">
                 <input type="text" id="userSearch" placeholder="ex: Apex Legends" required>
                 <button type="submit">Search</button>
             </form>
             <div id="rawg-data-container"></div>
             <div id="results-container">
+                <h1 class="streamsHeader hidden">Top Twitch Streams Now:</h1>
                 <ul id="results-list"></ul>
             </div>
         </main>    
