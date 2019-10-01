@@ -37,22 +37,25 @@ function displayGameData(rawg) {
     $('#banner').append(`<img id="game-banner" src="${rawg.background_image}">`);
 
     $('#rawg-data-container').append(
-        `<section>
-            <h2><a href="${rawg.website}" target="_blank">${rawg.name_original}</a></h2>
-            <section id="rating-container">
+        `<div>
+            <section id="game-header">
+                <h1><a href="${rawg.website}" target="_blank">${rawg.name_original}</a></h1>
+                <section id="rating-container">
+                </section>
+                <span id="platforms">Available at:
+                    <ul id="stores-list"></ul>
+                </span>
             </section>
-            <span id="platforms">Available at:
-                <ul id="stores-list">
-                </ul>
-            </span>
-        </section>
-        <div>
-            <span>
+            <span id="game-publishers">
+                <b>
                 Publisher: ${rawg.publishers[0].name}
                 <br>
                 Developer: ${rawg.developers[0].name}
+                </b>
             </span>
+            <div id="game-description">
             ${rawg.description}
+            </div>
         </div>`);
 
         if(rawg.esrb_rating !== null) {
@@ -164,10 +167,11 @@ function getTwitchUsers(streamResponse, options) {
 function displayResults(userResponse) {
 
     $('#results-list').append(
-        `<img class="twitchProfile" src="${userResponse.data[0].profile_image_url}">
+        `<div class="profile">
+        <img class="profileImage" src="${userResponse.data[0].profile_image_url}">
         <a class="profileLink" href="https://twitch.tv/${userResponse.data[0].display_name}" target="_blank">${userResponse.data[0].display_name}</a>
         <p class="profileDescription">${userResponse.data[0].description}</p>
-        `);
+        </div>`);
 };
 
 function watchForm() {
@@ -177,6 +181,7 @@ function watchForm() {
         const userInput = $('#userSearch').val().split(" ").join("-");
 
         $('#results-list').empty();
+        $('#userSearch').val('');
         getGamesResults(userInput);
     });
 };
