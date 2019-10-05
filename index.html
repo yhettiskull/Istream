@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang=en>
     <head>
         <title>iStream</title>
         <link href="https://fonts.googleapis.com/css?family=Montserrat|Turret+Road:800&display=swap" rel="stylesheet">
@@ -8,32 +8,37 @@
     <body>
         <h1 id="logo-text">iStream</h1>
         <header id="banner">
-            <div class="welcoming">
+            <section class="welcoming">
                 <h2>Welcome to iStream!</h2>
                 <p>Your one-stop-shop for finding your next video game adventure.
                 Just search the game you're interested in below, and we'll get you ready to start your new adventure!</p>
                 <aside id="rules">
                     <h2>Things We Need:</h2>
                     <ul>
-                        <li><b>The full name of the game</li>
-                        <li>No special characters</li>
-                        <li>Uh, yeah, that's it! Holy cow let's game!</b></li>
+                        <b>
+                            <li>The full name of the game</li>
+                            <li>No special characters</li>
+                            <li>Uh, yeah, that's it! Holy cow let's game!</li>
+                        </b>
                     </ul>
                 </aside>
-            </div>
+            </section>
         </header>
         <main>
-            <div>Not looking for anything in particular? Search a popular game like:</div>
-            <ul id="game-suggestion-container"></ul>
-            <form id="search-form">
-                <input type="text" id="userSearch" placeholder="ex: Apex Legends" required>
-                <button type="submit">Search</button>
-            </form>
-            <div id="rawg-data-container"></div>
-            <div id="results-container">
-                <h1 class="streamsHeader hidden">Top Twitch Streams Now:</h1>
-                <ul id="results-list"></ul>
-            </div>
+            <aside>
+                <p>Not looking for anything in particular? Search a popular game like:</p>
+                <ul id="game-suggestion-container"></ul>
+                <form id="search-form">
+                    <input type="text" id="userSearch" placeholder="ex: Apex Legends" required>
+                    <button type="submit">Search</button>
+                </form>
+                <span id="err-container"></span>
+                <section id="rawg-data-container"></section>
+                <div id="results-container">
+                    <h1 class="streamsHeader hidden">Top Twitch Streams Now:</h1>
+                    <ul id="results-list"></ul>
+                </div>
+            </aside>
         </main>    
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="script.js"></script>

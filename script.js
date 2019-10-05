@@ -37,26 +37,30 @@ function displayGameData(rawg) {
     $('#banner').append(`<img id="game-banner" src="${rawg.background_image}">`);
 
     $('#rawg-data-container').append(
-        `<div>
-            <section id="game-header">
-                <h1><a href="${rawg.website}" target="_blank">${rawg.name_original}</a></h1>
-                <section id="rating-container">
-                </section>
-                <span id="platforms">Available at:
-                    <ul id="stores-list"></ul>
-                </span>
-            </section>
-            <span id="game-publishers">
-                <b>
-                Publisher: ${rawg.publishers[0].name}
-                <br>
-                Developer: ${rawg.developers[0].name}
-                </b>
+        `<section id="game-header">
+            <h1 id="game-title"></h1>
+            <span id="rating-container"></span>
+            <span id="platforms">Available at:
+                <ul id="stores-list"></ul>
             </span>
-            <div id="game-description">
+        </section>
+        <span id="game-publishers">
+            <b>
+            Publisher: ${rawg.publishers[0].name}
+            <br>
+            Developer: ${rawg.developers[0].name}
+            </b>
+        </span>
+        <div id="game-description">
             ${rawg.description}
-            </div>
         </div>`);
+
+        if(rawg.website !== ""){
+            $('#game-title').append(`<a href="${rawg.website}" target="_blank">${rawg.name_original}</a>`)
+        }
+        else{
+            $('#game-title').text(`${rawg.name_original}`);
+        }
 
         if(rawg.esrb_rating !== null) {
             $('#rating-container').append(`<h4>ESRB: ${rawg.esrb_rating.name}</h4>`);
@@ -87,16 +91,20 @@ function getGamesResults(input) {
     fetch(rawgSearchUrl)
         .then(rawgResponse => {
             if (rawgResponse.ok) {
+                $('#err-container').empty();
                 return rawgResponse.json();
-            }
+                }
             throw new Error(rawgResponse.statusText);
-        })
+            })
         .then(rawgResponseJson => {
             console.log(rawgResponseJson)
             displayGameData(rawgResponseJson)
             getTwitchGame(rawgResponseJson, authHeader)
         })
-            .catch(error => alert(`Heck, we couldn't find your game. Review the Things We Need to ensure your search is valid.`))
+            .catch(error => {
+                $('#err-container').text(
+                    `Heck, we couldn't find your game. Review the Things We Need to ensure your search is valid.`);
+                })
 };
 
 function getTwitchGame(rawgResponse, options) {
@@ -109,6 +117,7 @@ function getTwitchGame(rawgResponse, options) {
     fetch(gameUrl, options)
         .then(gameResponse => {
             if (gameResponse.ok) {
+                $('#err-container').empty();
                 return gameResponse.json()
                 }
             throw new Error(gameResponse.statusText)
@@ -117,7 +126,7 @@ function getTwitchGame(rawgResponse, options) {
                 console.log(gameResponseJson);
                 getTwitchStreams(gameResponseJson, authHeader);
             })
-                .catch(error => alert(`Oops, could not get your game from Twitch. That's probably our bad cheif.`))
+                .catch(error => $('#err-container').text(`Oops, could not get your game from Twitch. Our bad cheif.`))
 
     console.log('getTwitchGame ran');
 
@@ -140,7 +149,6 @@ function getTwitchStreams(gameResponse, options) {
                 getTwitchUsers(streamResponseJson, authHeader);
             })
                 .catch(error => {
-                    alert(`Rats, Twitch couldn't find any streams for you.`);
                     $('#results-list').append(`Oh man, it looks like no one is streaming this game right now. Bummer.`);
                 });
     console.log('getTwitchStreams ran.')
@@ -164,7 +172,7 @@ function getTwitchUsers(streamResponse, options) {
                 console.log(usersResponseJson);
                 displayResults(usersResponseJson);
             })
-                .catch(error => alert(`Oops, we couldn't find Twitch users.`));
+                .catch(error => $('#err-container').text(`Oops, we couldn't find Twitch users.`));
     };
 };
 
@@ -209,7 +217,7 @@ function getGameSuggestions(gameUrl, options) {
                 )
             })
                 .catch(err => {
-                    $('#game-suggestion-container').append(`Yikes, it looks like we couldn't actually find them!`);
+                    $('#game-suggestion-container').append(`Yikes, it looks like we couldn't find any!`);
                 });
 };
 
